@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Story App</string>
+    <string name="message_login_page">Enter your data first</string>
+    <string name="title_login_page">Are you ready to share your story?</string>
+    <string name="email_invalid">Your Email is Invalid</string>
+    <string name="email">Email</string>
+    <string name="hint_email">Fill in your email</string>
+    <string name="password">Password</string>
+    <string name="hint_password">Fill in your password</string>
+    <string name="password_characters">Password cannot be less than 8 characters</string>
+    <string name="login">Login</string>
+    <string name="here">Here</string>
+    <string name="login_dont_have_account">Don’t have an account yet? Register</string>
 </resources>
