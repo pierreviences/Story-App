@@ -9,14 +9,14 @@ import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import com.example.storyapp.R
 import com.example.storyapp.databinding.ActivitySplashScreenBinding
-import com.example.storyapp.ui.factory.LoginViewModelFactory
+import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.view.auth.LoginActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory.getInstance(application)
+        AuthViewModelFactory.getInstance(application)
     }
     private val handler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {

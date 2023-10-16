@@ -17,15 +17,15 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.example.storyapp.R
-import com.example.storyapp.data.Result
+import com.example.storyapp.utils.Result
 import com.example.storyapp.databinding.ActivityRegisterBinding
-import com.example.storyapp.ui.factory.RegisterViewModelFactory
+import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel: RegisterViewModel by viewModels {
-        RegisterViewModelFactory.getInstance(application)
+        AuthViewModelFactory.getInstance(application)
     }
     private lateinit var progressDialog: Dialog
     private lateinit var alertDialog: AlertDialog.Builder

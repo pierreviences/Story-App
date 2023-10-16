@@ -13,14 +13,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.example.storyapp.R
 import com.example.storyapp.databinding.ActivityMainBinding
-import com.example.storyapp.ui.factory.LoginViewModelFactory
+import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.view.auth.LoginActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val  loginViewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory.getInstance(application)
+        AuthViewModelFactory.getInstance(application)
     }
     private lateinit var alertDialog: AlertDialog.Builder
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.storyapp.R
-import com.example.storyapp.data.Result
+import com.example.storyapp.utils.Result
 import com.example.storyapp.data.local.UserPreferences
 import com.example.storyapp.data.model.ErrorResponse
 import com.example.storyapp.data.model.LoginResult

@@ -12,22 +12,21 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.example.storyapp.R
-import com.example.storyapp.data.Result
+import com.example.storyapp.utils.Result
 import com.example.storyapp.databinding.ActivityLoginBinding
-import com.example.storyapp.ui.factory.LoginViewModelFactory
+import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.view.main.MainActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory.getInstance(application)
+        AuthViewModelFactory.getInstance(application)
     }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var progressDialog: Dialog
