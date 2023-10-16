@@ -8,39 +8,46 @@ import android.os.Bundle
 import android.view.View
 import com.example.storyapp.R
 import com.example.storyapp.databinding.ActivityLoginBinding
+import com.example.storyapp.databinding.ActivityRegisterBinding
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class RegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.tvLoginToRegister.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+        binding.tvRegisterToLogin.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
         playAnimation()
     }
     private fun playAnimation() {
-        val fadeInDuration = 500L
+        val fadeInDuration = 250L
 
-        val titleAnimator = createFadeInAnimator(binding.titleTextView, fadeInDuration)
-        val messageAnimator = createFadeInAnimator(binding.messageTextView, fadeInDuration)
+        val titleAnimator = createFadeInAnimator(binding.tvTitleRegister, fadeInDuration)
+        val nameTextAnimator = createFadeInAnimator(binding.tvName, fadeInDuration)
+        val nameEditTextAnimator = createFadeInAnimator(binding.nameEditTextLayout, fadeInDuration)
         val emailTextAnimator = createFadeInAnimator(binding.emailTextView, fadeInDuration)
         val emailEditTextAnimator = createFadeInAnimator(binding.emailEditTextLayout, fadeInDuration)
         val passwordTextAnimator = createFadeInAnimator(binding.passwordTextView, fadeInDuration)
         val passwordEditTextAnimator = createFadeInAnimator(binding.passwordEditTextLayout, fadeInDuration)
-        val loginButtonAnimator = createFadeInAnimator(binding.btnLogin, fadeInDuration)
+        val passwordConfirmTextAnimator = createFadeInAnimator(binding.passwordConfirmTextView, fadeInDuration)
+        val passwordConfirmEditTextAnimator = createFadeInAnimator(binding.passwordConfirmEditTextLayout, fadeInDuration)
+        val registerButtonAnimator = createFadeInAnimator(binding.btnRegister, fadeInDuration)
         val registerTextAnimator = createFadeInAnimator(binding.textViewToRegister, fadeInDuration)
 
         AnimatorSet().apply {
             playSequentially(
                 titleAnimator,
-                messageAnimator,
+                nameTextAnimator,
+                nameEditTextAnimator,
                 emailTextAnimator,
                 emailEditTextAnimator,
                 passwordTextAnimator,
                 passwordEditTextAnimator,
-                loginButtonAnimator,
+                passwordConfirmTextAnimator,
+                passwordConfirmEditTextAnimator,
+                registerButtonAnimator,
                 registerTextAnimator
             )
             startDelay = fadeInDuration
