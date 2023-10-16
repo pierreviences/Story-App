@@ -4,17 +4,23 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.example.storyapp.R
 import com.example.storyapp.data.Result
 import com.example.storyapp.databinding.ActivityRegisterBinding
 import com.example.storyapp.ui.factory.RegisterViewModelFactory
-import com.example.storyapp.ui.view.main.MainActivity
 import com.example.storyapp.ui.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
@@ -23,6 +29,8 @@ class RegisterActivity : AppCompatActivity() {
         RegisterViewModelFactory.getInstance(application)
     }
     private lateinit var progressDialog: Dialog
+    private lateinit var alertDialog: AlertDialog.Builder
+    private val handler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -30,10 +38,9 @@ class RegisterActivity : AppCompatActivity() {
         binding.tvRegisterToLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-
+        alertDialog = AlertDialog.Builder(this@RegisterActivity)
         setupClickListeners()
-
-        playAnimation()
+        playAnimations()
     }
 
     private fun setupClickListeners() {
@@ -59,8 +66,8 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.register(name, email, password).observe(this) { result ->
             when (result) {
                 is Result.Loading ->   showProgressDialog()
-                is Result.Success -> onLoginSuccess()
-                is Result.Error -> onLoginError(result.error)
+                is Result.Success -> onRegisterSuccess()
+                is Result.Error -> onRegisterError(result.error)
             }
         }
     }
@@ -80,16 +87,29 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun onLoginSuccess() {
+    private fun onRegisterSuccess() {
         hideProgressDialog()
-        startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog, null)
+
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
+
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+
+        handler.postDelayed({
+            alertDialog.dismiss()
+            startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+            finish()
+        }, 3000)
     }
-    private fun onLoginError(errorMessage: String) {
+    private fun onRegisterError(errorMessage: String) {
         hideProgressDialog()
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
 
     }
-    private fun playAnimation() {
+    private fun playAnimations() {
         val fadeInDuration = 250L
 
         val titleAnimator = createFadeInAnimator(binding.tvTitleRegister, fadeInDuration)

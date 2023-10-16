@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupClickListeners()
-        playAnimation()
+        playAnimations()
     }
 
 
@@ -75,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getUserLogin().observe(this) {
             if (it.token.isNotEmpty()) {
                 hideProgressDialog()
+                Toast.makeText(this, resources.getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             }
@@ -84,11 +85,10 @@ class LoginActivity : AppCompatActivity() {
     private fun onLoginError(errorMessage: String) {
         hideProgressDialog()
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-
     }
 
-    private fun playAnimation() {
-        val fadeInDuration = 500L
+    private fun playAnimations() {
+        val fadeInDuration = 300L
 
         val titleAnimator = createFadeInAnimator(binding.titleTextView, fadeInDuration)
         val messageAnimator = createFadeInAnimator(binding.messageTextView, fadeInDuration)

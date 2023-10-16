@@ -11,6 +11,9 @@
     <string name="hint_password">Fill in your password</string>
     <string name="password_characters">Password cannot be less than 8 characters</string>
     <string name="login">Login</string>
+    <string name="login_success">You are logged in successfully</string>
+    <string name="success">SUCCESS</string>
+    <string name="success_desc">Congratulations, your account has been successfully created.</string>
     <string name="login_error">Login Error</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="here">Here</string>
