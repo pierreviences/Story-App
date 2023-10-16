@@ -1,4 +1,4 @@
-package com.example.storyapp.ui.view.main
+package com.example.storyapp.ui.view.auth
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -15,6 +14,7 @@ import com.example.storyapp.R
 import com.example.storyapp.data.Result
 import com.example.storyapp.databinding.ActivityLoginBinding
 import com.example.storyapp.ui.factory.LoginViewModelFactory
+import com.example.storyapp.ui.view.main.MainActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {

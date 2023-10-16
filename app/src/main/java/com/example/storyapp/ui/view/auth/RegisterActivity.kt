@@ -1,4 +1,4 @@
-package com.example.storyapp.ui.view.main
+package com.example.storyapp.ui.view.auth
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -14,6 +14,7 @@ import com.example.storyapp.R
 import com.example.storyapp.data.Result
 import com.example.storyapp.databinding.ActivityRegisterBinding
 import com.example.storyapp.ui.factory.RegisterViewModelFactory
+import com.example.storyapp.ui.view.main.MainActivity
 import com.example.storyapp.ui.viewmodel.RegisterViewModel
 
 class RegisterActivity : AppCompatActivity() {
