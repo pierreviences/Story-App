@@ -27,7 +27,28 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
 
-
+        binding.btnLogin.setOnClickListener {
+            val email = binding.edLoginEmail.text.toString().trim()
+            val password = binding.edLoginPassword.text.toString().trim()
+            viewModel.login(email, password).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is Result.Success -> {
+                            showLoading(false)
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        }
+                        is Result.Error -> {
+                            val message = result.error
+                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+                        }
+                    }
+                }
+            }
+        }
 
         playAnimation()
     }
