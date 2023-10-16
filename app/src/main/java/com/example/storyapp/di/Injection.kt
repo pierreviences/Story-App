@@ -5,7 +5,7 @@ import com.example.storyapp.data.remote.ApiStoryConfig
 import com.example.storyapp.data.repository.UserRepository
 
 object Injection {
-    fun provideRepository(application: Application): UserRepository {
+    fun provideUserRepository(application: Application): UserRepository {
         val apiService = ApiStoryConfig.getApiService()
         return UserRepository.getInstance(apiService, application)
     }
