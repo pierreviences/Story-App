@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -71,8 +72,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onLoginSuccess() {
-        hideProgressDialog()
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        viewModel.getUserLogin().observe(this) {
+            if (it.token.isNotEmpty()) {
+                hideProgressDialog()
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }
+        }
+
     }
     private fun onLoginError(errorMessage: String) {
         hideProgressDialog()
