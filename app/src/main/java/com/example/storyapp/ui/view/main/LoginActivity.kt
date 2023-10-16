@@ -6,10 +6,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import com.example.storyapp.R
+import com.example.storyapp.data.Result
 import com.example.storyapp.databinding.ActivityLoginBinding
+import com.example.storyapp.ui.factory.LoginViewModelFactory
+import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
+    private val viewModel: LoginViewModel by viewModels {
+        LoginViewModelFactory.getInstance(application)
+    }
     private lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +26,13 @@ class LoginActivity : AppCompatActivity() {
         binding.tvLoginToRegister.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
+
+
+
         playAnimation()
+    }
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
     private fun playAnimation() {
         val fadeInDuration = 500L

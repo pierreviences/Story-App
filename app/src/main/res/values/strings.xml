@@ -16,4 +16,6 @@
     <string name="name">Name</string>
     <string name="register">Register</string>
     <string name="register_have_account">Already have an account?</string>
+    <string name="network_error_message">Network error occurred. Please check your internet connection</string>
+    <string name="unexpected_error_message">An unexpected error occurred. Please try again later</string>
 </resources>
