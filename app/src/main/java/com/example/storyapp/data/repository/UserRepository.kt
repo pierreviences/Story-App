@@ -27,10 +27,7 @@ class UserRepository private constructor(
             saveToken(response.loginResult)
             emit(Result.Success(response))
         } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            emit(Result.Error(errorMessage))
+            emit(handleHttpException(e))
         } catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
@@ -47,10 +44,7 @@ class UserRepository private constructor(
             val response = apiService.register(name, email, password)
             emit(Result.Success(response))
         }catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            emit(Result.Error(errorMessage))
+            emit(handleHttpException(e))
         }catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
@@ -60,6 +54,14 @@ class UserRepository private constructor(
         }
 
     }
+
+    private fun handleHttpException(exception: HttpException): Result.Error {
+        val jsonInString = exception.response()?.errorBody()?.string()
+        val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+        val errorMessage = errorBody.message
+        return Result.Error(errorMessage)
+    }
+
 
     suspend fun saveToken(data: LoginResult) {
         pref.saveUserLogin(data)
