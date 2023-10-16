@@ -16,7 +16,7 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
     private val userNameKey = stringPreferencesKey(USER_NAME_KEY)
     private val userTokenKey = stringPreferencesKey(USER_TOKEN_KEY)
 
-    fun getUserLogin(): Flow<LoginResult> {
+    fun getSession(): Flow<LoginResult> {
         return dataStore.data.map {
             LoginResult(
                 userId = it[userIdKey] ?: "null",
@@ -25,7 +25,7 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
             )
         }
     }
-    suspend fun saveUserLogin(data: LoginResult) {
+    suspend fun saveSession(data: LoginResult) {
         dataStore.edit { preferences ->
             preferences[userIdKey] = data.userId
             preferences[userNameKey] = data.name
@@ -33,7 +33,7 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-    suspend fun deleteUserLogin() {
+    suspend fun deleteSession() {
         dataStore.edit {
             it.remove(userNameKey)
             it.remove(userIdKey)

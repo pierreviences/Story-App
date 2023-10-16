@@ -18,13 +18,13 @@ import java.io.IOException
 class UserRepository private constructor(
     private val apiService: ApiStoryService,
     private val application: Application,
-    private val pref: UserPreferences
+    private val userPref: UserPreferences
 ) {
     fun login(email: String, password: String) = liveData {
         emit(Result.Loading)
         try {
             val response = apiService.login(email, password)
-            saveToken(response.loginResult)
+            saveSession(response.loginResult)
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))
@@ -63,16 +63,16 @@ class UserRepository private constructor(
     }
 
 
-    suspend fun saveToken(data: LoginResult) {
-        pref.saveUserLogin(data)
+    suspend fun saveSession(data: LoginResult) {
+        userPref.saveSession(data)
     }
 
-    fun getUserLogin(): LiveData<LoginResult> {
-        return pref.getUserLogin().asLiveData()
+    fun getSession(): LiveData<LoginResult> {
+        return userPref.getSession().asLiveData()
     }
 
-    suspend fun deleteLogin() {
-        pref.deleteUserLogin()
+    suspend fun deleteSession() {
+       userPref.deleteSession()
     }
     companion object {
         @Volatile
