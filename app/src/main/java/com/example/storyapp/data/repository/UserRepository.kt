@@ -28,12 +28,32 @@ class UserRepository private constructor(
         } catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
-            val errorMessage = exception.message ?: "Unknown error"
-            Log.e("UserRepository", "Login error: $errorMessage")
-            emit(Result.Error(exception.message ?: "Unknown error"))
+            val errorMessage = exception.message ?: application.resources.getString(R.string.unknown_error)
+            Log.e(TAG, "${application.resources.getString(R.string.login_error)}: $errorMessage")
+            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
         }
     }
 
+    fun register(name:String, email:String, password:String) = liveData {
+        emit(Result.Loading)
+
+        try {
+            val response = apiService.register(name, email, password)
+            emit(Result.Success(response))
+        }catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            emit(Result.Error(errorMessage))
+        }catch (exception: IOException) {
+            emit(Result.Error(application.resources.getString(R.string.network_error_message)))
+        } catch (exception: Exception) {
+            val errorMessage = exception.message ?: application.resources.getString(R.string.unknown_error)
+            Log.e(TAG, "${application.resources.getString(R.string.login_error)}: $errorMessage")
+            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
+        }
+
+    }
     companion object {
         @Volatile
         private var instance: UserRepository? = null
@@ -44,6 +64,8 @@ class UserRepository private constructor(
             instance ?: synchronized(this) {
                 instance ?: UserRepository(apiService, application)
             }.also { instance = it }
+
+        private const val TAG = "UserRepository"
     }
 
 }

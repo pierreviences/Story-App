@@ -75,8 +75,9 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
     }
     private fun onLoginError(errorMessage: String) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         hideProgressDialog()
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+
     }
 
     private fun playAnimation() {

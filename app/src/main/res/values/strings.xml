@@ -10,6 +10,8 @@
     <string name="hint_password">Fill in your password</string>
     <string name="password_characters">Password cannot be less than 8 characters</string>
     <string name="login">Login</string>
+    <string name="login_error">Login Error</string>
+    <string name="unknown_error">Unknown Error</string>
     <string name="here">Here</string>
     <string name="login_dont_have_account">Don’t have an account yet? Register</string>
     <string name="title_register_page">Complete your registration data below</string>
