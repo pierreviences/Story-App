@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -18,7 +19,7 @@ import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: LoginViewModel by viewModels {
+    private val  loginViewModel: LoginViewModel by viewModels {
         LoginViewModelFactory.getInstance(application)
     }
     private lateinit var alertDialog: AlertDialog.Builder
@@ -40,28 +41,28 @@ class MainActivity : AppCompatActivity() {
     }
     private fun showLogoutDialog() {
         val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_logout, null)
-
-        val alertDialog = AlertDialog.Builder(this)
-            .setView(customDialogView)
-            .create()
-
-        val btnYes: Button = customDialogView.findViewById<Button>(R.id.btnyes)
-        val btnNo: Button = customDialogView.findViewById<Button>(R.id.btnno)
-
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        btnNo.setOnClickListener {
+        val alertDialog = buildAlertDialog(customDialogView)
+        val yesButton = customDialogView.findViewById<Button>(R.id.btnyes)
+        val noButton = customDialogView.findViewById<Button>(R.id.btnno)
+        yesButton.setOnClickListener {
+            handleYesButtonClick()
+        }
+        noButton.setOnClickListener {
             alertDialog.dismiss()
         }
-        btnYes.setOnClickListener {
-            viewModel.deleteUserLogin()
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
-
-        }
-
-
         alertDialog.show()
     }
+    private fun buildAlertDialog(customDialogView: View): AlertDialog {
+        return AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
+    }
+    private fun handleYesButtonClick() {
+        loginViewModel.deleteUserLogin()
+        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+        finish()
+    }
+
+
 
 }

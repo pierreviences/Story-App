@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    app:cardCornerRadius="20dp"
+    android:background="@drawable/bg_round_logout"
     android:layout_marginHorizontal="20dp"
     app:cardBackgroundColor="@color/white"
     android:layout_height="match_parent">
@@ -18,20 +18,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="App name"
+            android:text="@string/logout"
             android:textStyle="bold"
-            android:textColor="@color/primary"
+            android:textColor="@color/black"
             android:textSize="18sp"
             />
         
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="message"
+            android:text="@string/logout_desc"
             android:gravity="center"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:textSize="16sp"
             />
         
@@ -41,20 +40,22 @@
             android:gravity="center"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnyes"
-                android:textColor="@color/white"
+                app:cornerRadius="10dp"
                 android:textSize="14sp"
-                android:text="Yes"
+                android:text="@string/yes"
                 android:layout_margin="10dp"
                 android:textAllCaps="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnno"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14sp"
-                android:text="No"
+                android:text="@string/no"
+                app:cornerRadius="10dp"
+                android:backgroundTint="@color/grey"
                 android:layout_margin="10dp"
                 android:textAllCaps="false"
                 android:layout_width="wrap_content"

@@ -67,21 +67,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun showProgressDialog() {
-        progressDialog = Dialog(this@LoginActivity)
-        progressDialog.setContentView(R.layout.custom_progressbar)
-        val progressBar: ProgressBar = progressDialog.findViewById(R.id.progressBar)
-        progressBar.isIndeterminate = true
-        progressDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        progressDialog.show()
-    }
-    private fun hideProgressDialog() {
-        if (::progressDialog.isInitialized && progressDialog.isShowing) {
-            progressDialog.dismiss()
-        }
-    }
-
     private fun onLoginSuccess() {
 
         hideProgressDialog()
@@ -111,6 +96,20 @@ class LoginActivity : AppCompatActivity() {
     private fun onLoginError(errorMessage: String) {
         hideProgressDialog()
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showProgressDialog() {
+        progressDialog = Dialog(this@LoginActivity)
+        progressDialog.setContentView(R.layout.custom_progressbar)
+        val progressBar: ProgressBar = progressDialog.findViewById(R.id.progressBar)
+        progressBar.isIndeterminate = true
+        progressDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        progressDialog.show()
+    }
+    private fun hideProgressDialog() {
+        if (::progressDialog.isInitialized && progressDialog.isShowing) {
+            progressDialog.dismiss()
+        }
     }
 
     private fun playAnimations() {

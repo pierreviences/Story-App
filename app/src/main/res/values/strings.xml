@@ -17,6 +17,10 @@
     <string name="login_error">Login Error</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="here">Here</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_desc">Are you sure want to log out?</string>
     <string name="login_dont_have_account">Don’t have an account yet? Register</string>
     <string name="title_register_page">Complete your registration data below</string>
     <string name="title_main">Story App</string>
