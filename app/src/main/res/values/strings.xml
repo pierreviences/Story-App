@@ -13,13 +13,16 @@
     <string name="login">Login</string>
     <string name="login_success">You are logged in successfully</string>
     <string name="success">SUCCESS</string>
-    <string name="success_desc">Congratulations, your account has been successfully created.</string>
+    <string name="register_success_desc">Congratulations, your account has been successfully created.</string>
     <string name="login_error">Login Error</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="here">Here</string>
     <string name="login_dont_have_account">Don’t have an account yet? Register</string>
     <string name="title_register_page">Complete your registration data below</string>
+    <string name="title_main">Story App</string>
     <string name="name">Name</string>
+    <string name="login_success_desc">You have successfully logged in, welcome</string>
+    <string name="menu_logout">Logout</string>
     <string name="register">Register</string>
     <string name="register_have_account">Already have an account?</string>
     <string name="network_error_message">Network error occurred. Please check your internet connection</string>

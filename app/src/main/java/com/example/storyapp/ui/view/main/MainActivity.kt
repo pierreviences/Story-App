@@ -1,12 +1,67 @@
 package com.example.storyapp.ui.view.main
 
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.example.storyapp.R
+import com.example.storyapp.databinding.ActivityMainBinding
+import com.example.storyapp.ui.factory.LoginViewModelFactory
+import com.example.storyapp.ui.view.auth.LoginActivity
+import com.example.storyapp.ui.viewmodel.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private val viewModel: LoginViewModel by viewModels {
+        LoginViewModelFactory.getInstance(application)
+    }
+    private lateinit var alertDialog: AlertDialog.Builder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        alertDialog = AlertDialog.Builder(this@MainActivity)
+        binding.topAppBar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.logout -> {
+                    showLogoutDialog()
+                    true
+                }
+                else -> false
+            }
+        }
     }
+    private fun showLogoutDialog() {
+        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_logout, null)
+
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
+
+        val btnYes: Button = customDialogView.findViewById<Button>(R.id.btnyes)
+        val btnNo: Button = customDialogView.findViewById<Button>(R.id.btnno)
+
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        btnNo.setOnClickListener {
+            alertDialog.dismiss()
+        }
+        btnYes.setOnClickListener {
+            viewModel.deleteUserLogin()
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            finish()
+
+        }
+
+
+        alertDialog.show()
+    }
+
 }

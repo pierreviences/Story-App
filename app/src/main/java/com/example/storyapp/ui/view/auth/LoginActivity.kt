@@ -4,12 +4,20 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.example.storyapp.R
 import com.example.storyapp.data.Result
 import com.example.storyapp.databinding.ActivityLoginBinding
@@ -23,10 +31,13 @@ class LoginActivity : AppCompatActivity() {
     }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var progressDialog: Dialog
+    private lateinit var alertDialog: AlertDialog.Builder
+    private val handler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        alertDialog = AlertDialog.Builder(this@LoginActivity)
         setupClickListeners()
         playAnimations()
     }
@@ -72,14 +83,29 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onLoginSuccess() {
+
+        hideProgressDialog()
+        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_success, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+
+
         viewModel.getUserLogin().observe(this) {
-            if (it.token.isNotEmpty()) {
-                hideProgressDialog()
-                Toast.makeText(this, resources.getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
-            }
+            val tvDescription: TextView = customDialogView.findViewById(R.id.tv_description)
+            tvDescription.text =  getString(R.string.login_success_desc) + " " +  it.name
         }
+
+        handler.postDelayed({
+            viewModel.getUserLogin().observe(this) {
+                if (it.token.isNotEmpty()) {
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                }
+            }
+        }, 3000)
 
     }
     private fun onLoginError(errorMessage: String) {

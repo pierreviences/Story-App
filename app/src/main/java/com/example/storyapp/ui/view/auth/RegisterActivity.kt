@@ -12,7 +12,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -89,7 +88,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun onRegisterSuccess() {
         hideProgressDialog()
-        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog, null)
+        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_success, null)
 
         val alertDialog = AlertDialog.Builder(this)
             .setView(customDialogView)

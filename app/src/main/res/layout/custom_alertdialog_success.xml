@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="@string/success_desc"
+                android:text="@string/register_success_desc"
                 android:textSize="14sp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="20dp"
