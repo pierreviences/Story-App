@@ -14,6 +14,8 @@ class SplashScreenActivity : AppCompatActivity() {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        
+        binding.apply {
+            titleSplash.animation = AnimationUtils.loadAnimation(this@SplashScreenActivity, R.anim.animsplash)
+        }
     }
 }
