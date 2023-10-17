@@ -11,19 +11,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiStoryConfig {
     companion object {
         fun getApiService(): ApiStoryService {
-            val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            val client = OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build()
 
-            val clientBuilder = OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-            val client = clientBuilder.build()
-
-            val retrofit = Retrofit.Builder()
+            return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
-
-            return retrofit.create(ApiStoryService::class.java)
+                .create(ApiStoryService::class.java)
         }
 
     }

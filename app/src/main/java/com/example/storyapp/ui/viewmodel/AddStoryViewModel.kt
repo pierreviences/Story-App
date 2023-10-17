@@ -2,7 +2,7 @@ package com.example.storyapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.storyapp.data.model.LoginResult
+import com.example.storyapp.data.model.auth.LoginResult
 import com.example.storyapp.data.repository.StoryRepository
 import com.example.storyapp.data.repository.UserRepository
 import java.io.File

@@ -11,7 +11,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.example.storyapp.R
-import com.example.storyapp.data.model.LoginResult
+import com.example.storyapp.data.model.auth.LoginResult
 import com.example.storyapp.databinding.ActivityAddStoryBinding
 import com.example.storyapp.ui.factory.ViewModelFactory
 import com.example.storyapp.ui.view.main.MainActivity
@@ -20,10 +20,6 @@ import com.example.storyapp.utils.Result
 import com.example.storyapp.utils.getImageUri
 import com.example.storyapp.utils.reduceFileImage
 import com.example.storyapp.utils.uriToFile
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding

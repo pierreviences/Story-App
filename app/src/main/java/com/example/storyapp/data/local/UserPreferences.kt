@@ -2,13 +2,13 @@ package com.example.storyapp.data.local
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import com.example.storyapp.data.model.auth.LoginResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.storyapp.data.model.LoginResult
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "token_user")
 class UserPreferences private constructor(private val dataStore: DataStore<Preferences>) {
@@ -16,28 +16,22 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
     private val userNameKey = stringPreferencesKey(USER_NAME_KEY)
     private val userTokenKey = stringPreferencesKey(USER_TOKEN_KEY)
 
-    fun getSession(): Flow<LoginResult> {
-        return dataStore.data.map {
-            LoginResult(
-                userId = it[userIdKey] ?: "null",
-                name = it[userNameKey] ?: "null",
-                token = it[userTokenKey] ?: ""
-            )
-        }
+    fun getSession(): Flow<LoginResult> = dataStore.data.map {
+        LoginResult(
+            userId = it[userIdKey] ?: "null",
+            name = it[userNameKey] ?: "null",
+            token = it[userTokenKey] ?: ""
+        )
     }
-    suspend fun saveSession(data: LoginResult) {
-        dataStore.edit { preferences ->
-            preferences[userIdKey] = data.userId
-            preferences[userNameKey] = data.name
-            preferences[userTokenKey] = data.token
+    suspend fun saveSession(data: LoginResult) = dataStore.edit {
+        with(it) {
+            this[userIdKey] = data.userId
+            this[userNameKey] = data.name
+            this[userTokenKey] = data.token
         }
     }
 
-    suspend fun deleteSession() {
-        dataStore.edit { preferences ->
-            preferences.clear()
-        }
-    }
+    suspend fun deleteSession() = dataStore.edit { it.clear() }
 
     companion object {
         @Volatile
@@ -57,3 +51,4 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         private const val USER_TOKEN_KEY = "token"
     }
 }
+
