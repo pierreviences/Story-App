@@ -33,15 +33,10 @@ class SplashScreenActivity : AppCompatActivity() {
     }
     private fun handleUserLogin() {
         viewModel.getUserLogin().observe(this) { user ->
-            val delay = if (user.token.isNullOrEmpty()) {
-                Intent(this@SplashScreenActivity, LoginActivity::class.java)
-            } else {
-                Intent(this@SplashScreenActivity, MainActivity::class.java)
-            }
+            val delayIntent = Intent(this, if (user.token.isNullOrEmpty()) LoginActivity::class.java else MainActivity::class.java)
 
             handler.postDelayed({
-                startActivity(delay)
-                finish()
+                startActivity(delayIntent); finish()
             }, SPLASH_SCREEN_DURATION)
         }
     }

@@ -33,14 +33,18 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(application)
     }
     private lateinit var alertDialog: AlertDialog.Builder
-    private lateinit var data: LoginResult
+    private lateinit var dataUser: LoginResult
     private val adapter = StoryAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupViews()
+        setupRecyclerView(adapter)
+    }
+    private fun setupViews(){
         mainViewModel.getUserLogin().observe(this@MainActivity) {
-            data = it
+            dataUser = it
         }
         alertDialog = AlertDialog.Builder(this@MainActivity)
         binding.fabAddStory.setOnClickListener {
@@ -52,34 +56,23 @@ class MainActivity : AppCompatActivity() {
                     showLogoutDialog()
                     true
                 }
-
                 else -> false
             }
-
         }
-
-
-        setupRecyclerView(adapter)
-
-
     }
-        private fun setupRecyclerView(adapter: StoryAdapter) {
+    private fun setupRecyclerView(adapter: StoryAdapter) {
             val layoutManager = LinearLayoutManager(this)
             binding.rvListStory.layoutManager = layoutManager
             binding.rvListStory.adapter = adapter
         }
     private fun handleStoryResult(result: Result<StoryResponse>, adapter: StoryAdapter) {
         when (result) {
-            is Result.Loading -> {
-                showLoading(true)
-            }
-
+            is Result.Loading ->  showLoading(true)
             is Result.Success -> {
                 showLoading(false)
                 val stories = result.data.listStory
                 adapter.submitList(stories)
             }
-
             is Result.Error -> {
                 showLoading(false)
                 val message = result.error
@@ -87,10 +80,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-        override fun onResume() {
+    override fun onResume() {
         super.onResume()
-            mainViewModel.getStories(data.token).observe(this) { result ->
+            mainViewModel.getStories(dataUser.token).observe(this) { result ->
                 handleStoryResult(result, adapter)
             }
     }
@@ -117,15 +109,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         finish()
     }
-
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
-
-
-
 }
