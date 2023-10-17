@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplikasi Cerita</string>
+    <string name="message_login_page">Masukkan data Anda terlebih dahulu</string>
+    <string name="title_login_page">Apakah Anda siap untuk berbagi cerita Anda?</string>
+    <string name="email_invalid">Email Anda tidak valid</string>
+    <string name="email">Email</string>
+    <string name="hint_email">Isi email Anda</string>
+    <string name="password">Kata Sandi</string>
+    <string name="password_notmatch">Kata Sandi tidak cocok</string>
+    <string name="password_confirm">Konfirmasi kata sandi</string>
+    <string name="hint_password">Isi kata sandi Anda</string>
+    <string name="password_characters">Kata sandi tidak boleh kurang dari 8 karakter</string>
+    <string name="login">Masuk</string>
+    <string name="login_success">Anda berhasil masuk</string>
+    <string name="success">BERHASIL</string>
+    <string name="register_success_desc">Selamat, akun Anda telah berhasil dibuat.</string>
+    <string name="login_error">Kesalahan Masuk</string>
+    <string name="unknown_error">Kesalahan Tidak Dikenal</string>
+    <string name="here">Di sini</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="picture">Gambar</string>
+    <string name="title_story">Judul Cerita</string>
+    <string name="desc_story">Lorem Ipsum hanyalah teks contoh dari industri percetakan dan penataan huruf. Lorem Ipsum telah menjadi teks contoh industri sejak tahun 1500-an, ketika seorang tukang cetak tidak dikenal mengambil suatu galley teks dan merancangnya menjadi buku contoh. Ia bertahan tidak hanya selama lima abad, tetapi juga telah beralih ke penataan elektronik, tetap tidak berubah. Ia dipopulerkan pada tahun 1960 dengan rilis lembaran Letraset yang mengandung passage Lorem Ipsum, dan lebih baru-baru ini dengan perangkat lunak penerbitan seperti Aldus PageMaker yang menyertakan versi Lorem Ipsum.</string>
+    <string name="logout">Keluar</string>
+    <string name="logout_desc">Anda yakin ingin keluar?</string>
+    <string name="login_dont_have_account">Belum punya akun? Daftar</string>
+    <string name="title_register_page">Lengkapi data pendaftaran Anda di bawah ini</string>
+    <string name="title_main">Aplikasi Cerita</string>
+    <string name="name">Nama</string>
+    <string name="galerry">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="camera">Kamera</string>
+    <string name="description">Deskripsi</string>
+    <string name="login_success_desc">Anda berhasil masuk, selamat datang</string>
+    <string name="menu_logout">Keluar</string>
+    <string name="register">Daftar</string>
+    <string name="success_upload_photo">Selamat, Anda berhasil mengunggah gambar</string>
+    <string name="empty_image_warning">Silakan masukkan file gambar terlebih dahulu.</string>
+    <string name="register_have_account">Sudah memiliki akun?</string>
+    <string name="network_error_message">Terjadi kesalahan jaringan. Harap periksa koneksi internet Anda</string>
+    <string name="unexpected_error_message">Terjadi kesalahan yang tidak terduga. Silakan coba lagi nanti</string>
+</resources>

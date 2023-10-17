@@ -1,7 +1,6 @@
 package com.example.storyapp.ui.custom
 
 import android.content.Context
-import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Patterns

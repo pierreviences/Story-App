@@ -3,6 +3,7 @@ package com.example.storyapp.ui.view.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -52,10 +53,15 @@ class MainActivity : AppCompatActivity() {
         }
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.localization -> {
+                    startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                    true
+                }
                 R.id.logout -> {
                     showLogoutDialog()
                     true
                 }
+
                 else -> false
             }
         }

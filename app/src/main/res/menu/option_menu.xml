@@ -7,4 +7,10 @@
         android:title="@string/menu_logout"
         android:icon="@drawable/ic_baseline_logout_24"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/localization"
+        android:title="@string/menu_logout"
+        android:icon="@drawable/ic_baseline_language_24"
+        app:showAsAction="always" />
 </menu>

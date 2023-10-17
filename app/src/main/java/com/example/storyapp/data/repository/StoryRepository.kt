@@ -1,7 +1,6 @@
 package com.example.storyapp.data.repository
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.liveData
 import com.example.storyapp.R
 import com.example.storyapp.data.model.ErrorResponse

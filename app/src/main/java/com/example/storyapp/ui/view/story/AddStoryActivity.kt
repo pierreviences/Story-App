@@ -21,7 +21,6 @@ import com.example.storyapp.R
 import com.example.storyapp.data.model.auth.LoginResult
 import com.example.storyapp.databinding.ActivityAddStoryBinding
 import com.example.storyapp.ui.factory.ViewModelFactory
-import com.example.storyapp.ui.view.auth.LoginActivity
 import com.example.storyapp.ui.view.main.MainActivity
 import com.example.storyapp.ui.viewmodel.AddStoryViewModel
 import com.example.storyapp.utils.Result

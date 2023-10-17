@@ -1,8 +1,6 @@
 package com.example.storyapp.data.remote
 
-import com.example.storyapp.BuildConfig
 import com.example.storyapp.utils.Constants
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
