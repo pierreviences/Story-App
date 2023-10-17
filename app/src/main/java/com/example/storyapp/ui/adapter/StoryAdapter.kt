@@ -1,7 +1,10 @@
 package com.example.storyapp.ui.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,9 +12,10 @@ import com.bumptech.glide.Glide
 import com.example.storyapp.R
 import com.example.storyapp.data.model.ListStoryItem
 import com.example.storyapp.databinding.ItemStoryBinding
+import com.example.storyapp.ui.view.story.DetailStoryActivity
+import androidx.core.util.Pair
 
 class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
-
     class MyViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ListStoryItem) {
@@ -24,8 +28,24 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
                 .fallback(R.drawable.ic_launcher_foreground)
                 .into(binding.ivItemPhoto)
 
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, DetailStoryActivity::class.java)
+                intent.putExtra(DetailStoryActivity.STORY_INTENT_DATA, data)
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        itemView.context as Activity,
+                        Pair(binding.ivItemPhoto, "picture"),
+                        Pair(binding.tvItemName, "name"),
+                        Pair(binding.tvItemDescription, "description"),
+                    )
+                itemView.context.startActivity(intent, optionsCompat.toBundle())
+            }
         }
 
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -33,9 +53,7 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
         return MyViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
-    }
+
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {

@@ -61,8 +61,6 @@ class MainActivity : AppCompatActivity() {
         private fun setupRecyclerView(adapter: StoryAdapter) {
             val layoutManager = LinearLayoutManager(this)
             binding.rvListStory.layoutManager = layoutManager
-            val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-            binding.rvListStory.addItemDecoration(itemDecoration)
             binding.rvListStory.adapter = adapter
         }
     private fun handleStoryResult(result: Result<StoryResponse>, adapter: StoryAdapter) {

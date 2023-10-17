@@ -1,6 +1,9 @@
 package com.example.storyapp.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
 data class StoryResponse(
 
@@ -15,6 +18,7 @@ data class StoryResponse(
 	val listStory: List<ListStoryItem>
 )
 
+@Parcelize
 data class ListStoryItem(
 
 	@field:SerializedName("id")
@@ -40,4 +44,4 @@ data class ListStoryItem(
 	val lat: Double? = null
 
 
-)
+): Parcelable

@@ -19,6 +19,7 @@
     <string name="here">Here</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="picture">Picture</string>
     <string name="title_story">Title Story</string>
     <string name="desc_story">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="logout">Log Out</string>
@@ -27,6 +28,10 @@
     <string name="title_register_page">Complete your registration data below</string>
     <string name="title_main">Story App</string>
     <string name="name">Name</string>
+    <string name="galerry">Galerry</string>
+    <string name="upload">Upload</string>
+    <string name="camera">Camera</string>
+    <string name="description">Description</string>
     <string name="login_success_desc">You have successfully logged in, welcome</string>
     <string name="menu_logout">Logout</string>
     <string name="register">Register</string>
