@@ -69,19 +69,7 @@ class LoginActivity : AppCompatActivity() {
     private fun onLoginSuccess() {
 
         hideProgressDialog()
-        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_success, null)
-        val alertDialog = AlertDialog.Builder(this)
-            .setView(customDialogView)
-            .create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog.show()
-
-
-        viewModel.getUserLogin().observe(this) {
-            val tvDescription: TextView = customDialogView.findViewById(R.id.tv_description)
-            tvDescription.text =  getString(R.string.login_success_desc) + " " +  it.name
-        }
-
+        showSuccessDialog()
         handler.postDelayed({
             viewModel.getUserLogin().observe(this) {
                 if (it.token.isNotEmpty()) {
@@ -91,6 +79,20 @@ class LoginActivity : AppCompatActivity() {
             }
         }, 3000)
 
+    }
+
+    private fun showSuccessDialog() {
+        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_success, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+
+        viewModel.getUserLogin().observe(this) {
+            val tvDescription: TextView = customDialogView.findViewById(R.id.tv_description)
+            tvDescription.text = getString(R.string.login_success_desc) + " " + it.name
+        }
     }
     private fun onLoginError(errorMessage: String) {
         hideProgressDialog()

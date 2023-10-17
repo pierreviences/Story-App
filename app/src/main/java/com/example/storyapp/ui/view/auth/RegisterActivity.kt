@@ -34,9 +34,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.tvRegisterToLogin.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
         alertDialog = AlertDialog.Builder(this@RegisterActivity)
         setupClickListeners()
         playAnimations()
@@ -88,21 +85,26 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun onRegisterSuccess() {
         hideProgressDialog()
-        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_success, null)
-
-        val alertDialog = AlertDialog.Builder(this)
-            .setView(customDialogView)
-            .create()
-
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog.show()
-
+        showSuccessDialog()
         handler.postDelayed({
-            alertDialog.dismiss()
             startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
             finish()
         }, 3000)
     }
+
+
+    private fun showSuccessDialog() {
+        val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_success, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+        handler.postDelayed({
+            alertDialog.dismiss()
+        }, 3000)
+    }
+
     private fun onRegisterError(errorMessage: String) {
         hideProgressDialog()
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()

@@ -14,17 +14,14 @@ class ViewModelFactory private constructor(
     private val storyRepository: StoryRepository) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return when {
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+    override fun <T : ViewModel> create(modelClass: Class<T>):T =
+        when {
+            modelClass.isAssignableFrom(MainViewModel::class.java) ->
                 MainViewModel(userRepository, storyRepository) as T
-            }
-            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) ->
                 AddStoryViewModel(userRepository, storyRepository) as T
-            }
-            else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
-    }
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
