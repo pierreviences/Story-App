@@ -20,6 +20,7 @@ import com.example.storyapp.ui.adapter.StoryAdapter
 import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.factory.ViewModelFactory
 import com.example.storyapp.ui.view.auth.LoginActivity
+import com.example.storyapp.ui.view.story.AddStoryActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
 import com.example.storyapp.utils.Result
@@ -40,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         alertDialog = AlertDialog.Builder(this@MainActivity)
+        binding.fabAddStory.setOnClickListener {
+            startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
+        }
         binding.topAppBar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.logout -> {
