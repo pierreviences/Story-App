@@ -27,31 +27,22 @@ class MyEmailEditText : TextInputEditText {
     }
 
     private fun init() {
-        val message = resources.getString(R.string.email_invalid)
-        this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+        val errorMessage = resources.getString(R.string.email_invalid)
+
+        addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != null) {
-                    if (s.isEmail()) {
-                        error = null
-                    } else {
-                        setError(message, null)
-                    }
+                    error = if (s.isEmail()) null else errorMessage
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
-
+            override fun afterTextChanged(s: android.text.Editable?) {}
         })
     }
 
-    fun CharSequence.isEmail(): Boolean {
-        if (Patterns.EMAIL_ADDRESS.matcher(this).matches()) {
-            return true
-        }
-        return false
+    private fun CharSequence.isEmail(): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 }

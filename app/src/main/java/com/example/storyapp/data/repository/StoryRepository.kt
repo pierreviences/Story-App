@@ -31,15 +31,13 @@ class StoryRepository private constructor(
         } catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
-            val errorMessage = exception.message ?: application.resources.getString(R.string.unknown_error)
-            Log.e(TAG, "${application.resources.getString(R.string.login_error)}: $errorMessage")
             emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
         }
     }
 
     fun uploadStories(description: String, photo: File, token: String)= liveData {
         emit(Result.Loading)
-        val tokens = "Bearer $token"
+        val authToken  = "Bearer $token"
         val requestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = photo.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
@@ -48,15 +46,13 @@ class StoryRepository private constructor(
             requestImageFile
         )
         try {
-            val response = apiService.uploadStory(tokens, multipartBody, requestBody )
+            val response = apiService.uploadStory(authToken , multipartBody, requestBody )
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))
         } catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
-            val errorMessage = exception.message ?: application.resources.getString(R.string.unknown_error)
-            Log.e(TAG, "${application.resources.getString(R.string.login_error)}: $errorMessage")
             emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
         }
 
@@ -79,7 +75,5 @@ class StoryRepository private constructor(
             instance ?: synchronized(this) {
                 instance ?: StoryRepository(apiService, application)
             }.also { instance = it }
-
-        private const val TAG = "StoryRepository"
     }
 }

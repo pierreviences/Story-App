@@ -18,40 +18,46 @@ import androidx.core.util.Pair
 class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     class MyViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: ListStoryItem) {
-            binding.tvItemName.text = data.name
-            binding.tvItemDescription.text = data.description
+        fun bind(data: ListStoryItem) = with(binding) {
+            tvItemName.text = data.name
+            tvItemDescription.text = data.description
+
             Glide.with(itemView.context)
                 .load(data.photoUrl)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .fallback(R.drawable.ic_launcher_foreground)
-                .into(binding.ivItemPhoto)
+                .into(ivItemPhoto)
 
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, DetailStoryActivity::class.java)
-                intent.putExtra(DetailStoryActivity.STORY_INTENT_DATA, data)
+                val intent = Intent(itemView.context, DetailStoryActivity::class.java).apply {
+                    putExtra(DetailStoryActivity.STORY_INTENT_DATA, data)
+                }
+
                 val optionsCompat: ActivityOptionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation(
                         itemView.context as Activity,
-                        Pair(binding.ivItemPhoto, "picture"),
-                        Pair(binding.tvItemName, "name"),
-                        Pair(binding.tvItemDescription, "description"),
+                        Pair(ivItemPhoto, "picture"),
+                        Pair(tvItemName, "name"),
+                        Pair(tvItemDescription, "description"),
                     )
                 itemView.context.startActivity(intent, optionsCompat.toBundle())
             }
         }
-
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
+        MyViewHolder(
+            ItemStoryBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
 
 

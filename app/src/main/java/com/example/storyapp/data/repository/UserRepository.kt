@@ -7,7 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.storyapp.R
 import com.example.storyapp.utils.Result
-import com.example.storyapp.data.local.UserPreferences
+import com.example.storyapp.data.local.datastore.UserPreferences
 import com.example.storyapp.data.model.ErrorResponse
 import com.example.storyapp.data.model.auth.LoginResult
 import com.example.storyapp.data.remote.ApiStoryService
@@ -31,8 +31,6 @@ class UserRepository private constructor(
         } catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
-            val errorMessage = exception.message ?: application.resources.getString(R.string.unknown_error)
-            Log.e(TAG, "${application.resources.getString(R.string.login_error)}: $errorMessage")
             emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
         }
     }
@@ -48,8 +46,6 @@ class UserRepository private constructor(
         }catch (exception: IOException) {
             emit(Result.Error(application.resources.getString(R.string.network_error_message)))
         } catch (exception: Exception) {
-            val errorMessage = exception.message ?: application.resources.getString(R.string.unknown_error)
-            Log.e(TAG, "${application.resources.getString(R.string.login_error)}: $errorMessage")
             emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
         }
 
@@ -63,18 +59,11 @@ class UserRepository private constructor(
     }
 
 
-    suspend fun saveSession(data: LoginResult) {
-        userPref.saveSession(data)
-    }
+    suspend fun saveSession(data: LoginResult) = userPref.saveSession(data)
 
-    fun getSession(): LiveData<LoginResult> {
-        return userPref.getSession().asLiveData()
-    }
+    fun getSession(): LiveData<LoginResult> = userPref.getSession().asLiveData()
 
-    suspend fun deleteSession() {
-       userPref.deleteSession()
-    }
-
+    suspend fun deleteSession() = userPref.deleteSession()
 
     companion object {
         @Volatile
@@ -87,8 +76,6 @@ class UserRepository private constructor(
             instance ?: synchronized(this) {
                 instance ?: UserRepository(apiService, application, pref)
             }.also { instance = it }
-
-        private const val TAG = "UserRepository"
     }
 
 }
