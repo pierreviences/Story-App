@@ -10,20 +10,31 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiStoryConfig {
     companion object {
-        fun getApiService(): ApiStoryService {
-            val loggingInterceptor = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            } else {
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
-            }
-            val client = OkHttpClient.Builder()
+        fun getApiService(token: String? = null): ApiStoryService {
+            val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
+            val clientBuilder = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .build()
+
+            token?.let {
+                val authInterceptor = Interceptor { chain ->
+                    val req = chain.request()
+                    val requestHeaders = req.newBuilder()
+                        .addHeader("Authorization", "Bearer $it")
+                        .build()
+                    chain.proceed(requestHeaders)
+                }
+                clientBuilder.addInterceptor(authInterceptor)
+            }
+
+            val client = clientBuilder.build()
+
             val retrofit = Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
+
             return retrofit.create(ApiStoryService::class.java)
         }
 
