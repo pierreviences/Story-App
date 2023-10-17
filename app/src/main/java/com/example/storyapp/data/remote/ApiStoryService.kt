@@ -38,8 +38,8 @@ interface ApiStoryService {
     @Multipart
     @POST("stories/guest")
     fun uploadStory(
-        @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
+        @Part file: MultipartBody.Part,
     ): UploadStoryResponse
 
 }
