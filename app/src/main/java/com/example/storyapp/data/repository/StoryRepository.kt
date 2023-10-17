@@ -21,10 +21,10 @@ class StoryRepository private constructor(
     private val application: Application
 ) {
 
-    fun getStories() = liveData {
+    fun getStories(token: String) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getStories()
+            val response = apiService.getStories("Bearer $token")
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))
@@ -37,8 +37,9 @@ class StoryRepository private constructor(
         }
     }
 
-    fun uploadStories(description: String, photo: File)= liveData {
+    fun uploadStories(description: String, photo: File, token: String)= liveData {
         emit(Result.Loading)
+        val tokens = "Bearer $token"
         val requestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = photo.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
@@ -47,7 +48,7 @@ class StoryRepository private constructor(
             requestImageFile
         )
         try {
-            val response = apiService.uploadStory(  requestBody, multipartBody)
+            val response = apiService.uploadStory(tokens, multipartBody, requestBody )
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))

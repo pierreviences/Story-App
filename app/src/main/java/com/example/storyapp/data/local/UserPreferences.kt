@@ -34,10 +34,8 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
     }
 
     suspend fun deleteSession() {
-        dataStore.edit {
-            it.remove(userNameKey)
-            it.remove(userIdKey)
-            it.remove(userTokenKey)
+        dataStore.edit { preferences ->
+            preferences.clear()
         }
     }
 

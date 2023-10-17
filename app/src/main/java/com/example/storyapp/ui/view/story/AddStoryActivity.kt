@@ -1,5 +1,6 @@
 package com.example.storyapp.ui.view.story
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,9 +9,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import com.example.storyapp.R
+import com.example.storyapp.data.model.LoginResult
 import com.example.storyapp.databinding.ActivityAddStoryBinding
+import com.example.storyapp.ui.factory.ViewModelFactory
+import com.example.storyapp.ui.view.main.MainActivity
+import com.example.storyapp.ui.viewmodel.AddStoryViewModel
+import com.example.storyapp.utils.Result
 import com.example.storyapp.utils.getImageUri
+import com.example.storyapp.utils.reduceFileImage
 import com.example.storyapp.utils.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -20,11 +28,17 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private var currentImageUri: Uri? = null
+    private val viewModel: AddStoryViewModel by viewModels{
+        ViewModelFactory.getInstance(application)
+    }
+    private lateinit var data: LoginResult
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        viewModel.getUserLogin().observe(this@AddStoryActivity) {
+            data = it
+        }
         binding.btnGalerry.setOnClickListener { startGallery() }
         binding.btnCamera.setOnClickListener { startCamera() }
         binding.buttonAdd.setOnClickListener { uploadImage() }
@@ -66,18 +80,29 @@ class AddStoryActivity : AppCompatActivity() {
     }
     private fun uploadImage() {
         currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, this)
+            val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
-            val description = "Ini adalah deksripsi gambar"
-            showLoading(true)
+            val description = binding.edAddDescription.text.toString()
+            viewModel.addStory(description, imageFile, data.token).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is Result.Success -> {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                            showLoading(false)
+                        }
+                        is Result.Error -> {
+                            showToast(result.error)
+                            showLoading(false)
+                        }
+                    }
+                }
+            }
 
-            val requestBody = description.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-            val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
-                imageFile.name,
-                requestImageFile
-            )
+
 
 
         } ?: showToast(getString(R.string.empty_image_warning))

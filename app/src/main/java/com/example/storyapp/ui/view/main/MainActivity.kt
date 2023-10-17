@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.data.model.ListStoryItem
+import com.example.storyapp.data.model.LoginResult
 import com.example.storyapp.data.model.StoryResponse
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.ui.adapter.StoryAdapter
@@ -35,11 +36,15 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(application)
     }
     private lateinit var alertDialog: AlertDialog.Builder
-
+    private lateinit var data: LoginResult
+    private val adapter = StoryAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mainViewModel.getUserLogin().observe(this@MainActivity) {
+            data = it
+        }
         alertDialog = AlertDialog.Builder(this@MainActivity)
         binding.fabAddStory.setOnClickListener {
             startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
@@ -56,11 +61,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val adapter = StoryAdapter()
+
         setupRecyclerView(adapter)
-        mainViewModel.getStories().observe(this) { result ->
-            handleStoryResult(result, adapter)
-        }
+
+
     }
         private fun setupRecyclerView(adapter: StoryAdapter) {
             val layoutManager = LinearLayoutManager(this)
@@ -89,7 +93,9 @@ class MainActivity : AppCompatActivity() {
 
         override fun onResume() {
         super.onResume()
-        mainViewModel.getStories()
+            mainViewModel.getStories(data.token).observe(this) { result ->
+                handleStoryResult(result, adapter)
+            }
     }
     private fun showLogoutDialog() {
         val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_logout, null)

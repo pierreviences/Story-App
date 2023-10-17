@@ -10,13 +10,15 @@ import com.example.storyapp.utils.Result
 import com.example.storyapp.data.local.UserPreferences
 import com.example.storyapp.data.model.ErrorResponse
 import com.example.storyapp.data.model.LoginResult
+import com.example.storyapp.data.remote.ApiStoryConfig
 import com.example.storyapp.data.remote.ApiStoryService
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import java.io.IOException
 
 class UserRepository private constructor(
-    private val apiService: ApiStoryService,
+    private var apiService: ApiStoryService,
     private val application: Application,
     private val userPref: UserPreferences
 ) {
@@ -74,6 +76,8 @@ class UserRepository private constructor(
     suspend fun deleteSession() {
        userPref.deleteSession()
     }
+
+
     companion object {
         @Volatile
         private var instance: UserRepository? = null

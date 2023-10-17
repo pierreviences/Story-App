@@ -4,16 +4,23 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.data.repository.StoryRepository
+import com.example.storyapp.data.repository.UserRepository
 import com.example.storyapp.di.Injection
+import com.example.storyapp.ui.viewmodel.AddStoryViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
 
-class ViewModelFactory private constructor(private val storyRepository: StoryRepository) :
+class ViewModelFactory private constructor(
+    private val userRepository: UserRepository,
+    private val storyRepository: StoryRepository) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(storyRepository) as T
+                MainViewModel(userRepository, storyRepository) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(userRepository, storyRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -23,7 +30,9 @@ class ViewModelFactory private constructor(private val storyRepository: StoryRep
         private var instance: ViewModelFactory? = null
         fun getInstance(application: Application): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideStoryRepository(application))
+                instance ?: ViewModelFactory(
+                    Injection.provideUserRepository(application),
+                    Injection.provideStoryRepository(application))
             }.also { instance = it }
     }
 

@@ -1,6 +1,8 @@
 package com.example.storyapp.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class LoginResponse(
 
@@ -14,6 +16,7 @@ data class LoginResponse(
 	val loginResult: LoginResult,
 )
 
+@Parcelize
 data class LoginResult(
 
 	@field:SerializedName("userId")
@@ -24,4 +27,4 @@ data class LoginResult(
 
 	@field:SerializedName("token")
 	val token: String
-)
+): Parcelable
