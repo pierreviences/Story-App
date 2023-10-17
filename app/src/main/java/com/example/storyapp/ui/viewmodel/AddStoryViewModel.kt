@@ -14,7 +14,5 @@ class AddStoryViewModel(
     fun addStory(description: String, file: File, token: String) =
         storyRepository.uploadStories(description, file, token)
 
-    fun getUserLogin(): LiveData<LoginResult> {
-        return userRepository.getSession()
-    }
+    fun getUserLogin(): LiveData<LoginResult> = userRepository.getSession()
 }

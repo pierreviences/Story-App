@@ -10,7 +10,6 @@ class MainViewModel(
     private val userRepository: UserRepository,
     private val storyRepository: StoryRepository) : ViewModel() {
     fun getStories(token: String) = storyRepository.getStories(token)
-    fun getUserLogin(): LiveData<LoginResult> {
-        return userRepository.getSession()
-    }
+    fun getUserLogin(): LiveData<LoginResult> =  userRepository.getSession()
+
 }
