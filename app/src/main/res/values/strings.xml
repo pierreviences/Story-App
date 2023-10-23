@@ -38,6 +38,7 @@
     <string name="retry">Try Again</string>
     <string name="menu_language">Language</string>
     <string name="menu_map">Maps</string>
+    <string name="detail_story">Detail Story</string>
     <string name="turn_on_location">Turn On Location</string>
     <string name="please_active_locationyou">Please Active Location You</string>
     <string name="success_upload_photo">Congratulations, you have successfully uploaded the image</string>

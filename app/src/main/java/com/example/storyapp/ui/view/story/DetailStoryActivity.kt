@@ -24,6 +24,9 @@ class DetailStoryActivity : AppCompatActivity() {
                 .load(it.photoUrl)
                 .into(binding.ivDetailPhoto)
         }
+        binding.topAppBar.setNavigationOnClickListener { _ ->
+            onBackPressed()
+        }
     }
     companion object {
         const val STORY_INTENT_DATA = "STORY_INTENT_DATA"

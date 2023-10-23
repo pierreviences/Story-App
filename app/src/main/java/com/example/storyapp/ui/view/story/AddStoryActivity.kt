@@ -70,6 +70,9 @@ class AddStoryActivity : AppCompatActivity() {
             if (isChecked) getLocation()
             else location = null
         }
+        binding.topAppBar.setNavigationOnClickListener { _ ->
+            onBackPressed()
+        }
 
         setClickListeners()
 
