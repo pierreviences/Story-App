@@ -86,7 +86,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 MarkerOptions()
                                     .position(latLng)
                                     .title(data.name)
-                                    .snippet(data.description + "Latitude : ${data.lat}, Longitude : ${data.lon}")
+                                    .snippet(data.description)
                             )
                         }
 

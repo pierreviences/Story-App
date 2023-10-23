@@ -39,6 +39,7 @@
     <string name="retry">Coba Lagi</string>
     <string name="menu_language">Bahasa</string>
     <string name="menu_map">Maps</string>
+    <string name="turn_on_location">Nyalakan Lokasi</string>
     <string name="please_active_locationyou">Tolong aktifkan lokasi kamu</string>
     <string name="success_upload_photo">Selamat, Anda berhasil mengunggah gambar</string>
     <string name="empty_image_warning">Silakan masukkan file gambar terlebih dahulu.</string>

@@ -26,7 +26,7 @@
     <ImageView
         android:id="@+id/previewImageView"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -37,6 +37,7 @@
         app:srcCompat="@drawable/ic_place_holder" />
 
     <LinearLayout
+        android:layout_marginTop="5dp"
         android:id="@+id/buttonPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +65,27 @@
 
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/switchPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonPanel">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn on Location"
+            android:textColor="@color/primary"
+            android:textSize="14sp"/>
+     <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
     <EditText
         android:id="@+id/ed_add_description"
         android:layout_width="0dp"
@@ -74,14 +96,13 @@
         android:layout_marginHorizontal="8dp"
         android:hint="@string/description"
         android:inputType="textMultiLine"
-        android:maxHeight="500dp"
+        android:maxHeight="480dp"
         android:layout_height="180dp"
-        android:layout_marginTop="16dp"
         android:autofillHints="Description"
         android:maxLines="8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonPanel" />
+        app:layout_constraintTop_toBottomOf="@id/switchPanel" />
     <Button
         android:id="@+id/button_add"
         android:layout_width="0dp"

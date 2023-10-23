@@ -27,6 +27,16 @@ import com.example.storyapp.utils.Result
 import com.example.storyapp.utils.getImageUri
 import com.example.storyapp.utils.reduceFileImage
 import com.example.storyapp.utils.uriToFile
+import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.content.pm.PackageManager
+import android.location.Location
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
@@ -37,6 +47,16 @@ class AddStoryActivity : AppCompatActivity() {
     private lateinit var dataUser: LoginResult
     private lateinit var alertDialog: AlertDialog.Builder
     private val handler = Handler(Looper.getMainLooper())
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {
+        when {
+            it[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> getLocation()
+            else -> binding.switchLocation.isChecked = false
+        }
+    }
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var location: Location? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
@@ -45,6 +65,12 @@ class AddStoryActivity : AppCompatActivity() {
         viewModel.getUserLogin().observe(this@AddStoryActivity) {
             dataUser = it
         }
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) getLocation()
+            else location = null
+        }
+
         setClickListeners()
 
     }
@@ -95,7 +121,16 @@ class AddStoryActivity : AppCompatActivity() {
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
             val description = binding.edAddDescription.text.toString()
-            viewModel.addStory(description, imageFile, dataUser.token).observe(this) { result ->
+            var lat: RequestBody? = null
+            var lon: RequestBody? = null
+
+            if (location != null) {
+                lat = location?.latitude.toString()
+                    .toRequestBody("text/plain".toMediaType())
+                lon = location?.longitude.toString()
+                    .toRequestBody("text/plain".toMediaType())
+            }
+            viewModel.addStory(lat, lon, description, imageFile, dataUser.token).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is Result.Loading -> showLoading(true)
@@ -128,6 +163,22 @@ class AddStoryActivity : AppCompatActivity() {
         handler.postDelayed({
             alertDialog.dismiss()
         }, 3000)
+    }
+
+    private fun getLocation() {
+        if (
+            ContextCompat.checkSelfPermission(
+                this@AddStoryActivity, ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                if (it != null) location = it
+                else {
+                    showToast(getString(R.string.please_active_locationyou))
+                    binding.switchLocation.isChecked = false
+                }
+            }
+        } else requestPermissionLauncher.launch(arrayOf(ACCESS_COARSE_LOCATION))
     }
 
     private fun showLoading(isLoading: Boolean) {

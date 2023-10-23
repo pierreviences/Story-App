@@ -19,6 +19,7 @@ import com.example.storyapp.utils.Result
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
@@ -49,9 +50,9 @@ class StoryRepository private constructor(
         ).liveData
     }
 
-    fun uploadStories(description: String, photo: File, token: String)= liveData {
+    fun uploadStories(lat: RequestBody? = null, lon: RequestBody? = null, description: String, photo: File, token: String)= liveData {
         emit(Result.Loading)
-        val requestBody = description.toRequestBody("text/plain".toMediaType())
+        val descriptionRequestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = photo.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
             "photo",
@@ -59,7 +60,7 @@ class StoryRepository private constructor(
             requestImageFile
         )
         try {
-            val response = apiService.uploadStory(getAuthToken(token), multipartBody, requestBody )
+            val response = apiService.uploadStory(getAuthToken(token), multipartBody, descriptionRequestBody, lat, lon )
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))
