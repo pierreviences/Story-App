@@ -9,13 +9,13 @@ object DataDummy {
         val stories = mutableListOf<ListStoryItem>()
         for (i in 1..10) {
             val storyItem = ListStoryItem(
-                id = i.toString(),
-                name = "name $i",
-                description = "desc $i",
-                photoUrl = "photo $i",
-                createdAt = "createdAr $i",
-                lon = i.toDouble(),
-                lat = i.toDouble(),
+                id = "story-V1NgjIFaBwi_T18_",
+                name = "yazid",
+                description = "p",
+                photoUrl = "https://story-api.dicoding.dev/images/stories/photos-1698067138823_-36zx7Xu.jpg",
+                createdAt = "2023-10-23T13:18:58.828Z",
+                lat = -6.5420675,
+                lon = 106.8245843
             )
             stories.add(storyItem)
         }
