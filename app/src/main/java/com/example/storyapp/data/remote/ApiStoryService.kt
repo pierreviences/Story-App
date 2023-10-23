@@ -35,8 +35,7 @@ interface ApiStoryService {
     suspend fun getStories(
         @Header("Authorization") token: String,
         @Query("page") page: Int? = null,
-        @Query("size") size: Int? = null,
-        @Query("location") location: Int? = null,
+        @Query("size") size: Int? = null
     ): StoryResponse
 
     @Multipart

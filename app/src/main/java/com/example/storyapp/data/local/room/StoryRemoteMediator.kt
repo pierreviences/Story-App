@@ -5,6 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.example.storyapp.data.model.story.ListStoryItem
 import com.example.storyapp.data.remote.ApiStoryService
 
 @OptIn(ExperimentalPagingApi::class)
@@ -12,7 +13,7 @@ class StoryRemoteMediator(
     private val token: String,
     private val apiService: ApiStoryService,
     private val database: StoryDatabase
-) : RemoteMediator<Int, StoryEntity>() {
+) : RemoteMediator<Int, ListStoryItem>() {
 
     private companion object {
         const val INITIAL_PAGE_INDEX = 1
@@ -23,7 +24,7 @@ class StoryRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, StoryEntity>
+        state: PagingState<Int, ListStoryItem>
     ): MediatorResult {
         val page = INITIAL_PAGE_INDEX
         try {
@@ -34,7 +35,7 @@ class StoryRemoteMediator(
                     database.storyDao().deleteAllStories()
                 }
                 responseData.listStory.forEach { storyItem ->
-                    val story = StoryEntity(
+                    val story = ListStoryItem(
                         storyItem.id,
                         storyItem.name,
                         storyItem.description,

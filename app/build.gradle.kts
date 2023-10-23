@@ -30,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures{
@@ -68,7 +68,12 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.0.0")
     implementation("androidx.exifinterface:exifinterface:1.3.6")
     implementation("androidx.paging:paging-runtime-ktx:3.1.0")
-    implementation("androidx.room:room-ktx:2.4.0-rc01")
-    implementation("androidx.room:room-paging:2.4.0-rc01")
-    kapt("androidx.room:room-compiler:2.4.0-rc01")
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+    implementation("androidx.room:room-paging:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
+
+}
+kapt {
+    correctErrorTypes = true
 }

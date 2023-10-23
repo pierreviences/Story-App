@@ -12,8 +12,9 @@ object Injection {
 
     private fun provideApiService() = ApiStoryConfig.getApiService()
 
-    fun provideStoryRepository(application: Application, storyDatabase: StoryDatabase): StoryRepository {
-        return StoryRepository.getInstance(provideApiService(), application, storyDatabase)
+    fun provideStoryRepository(application: Application): StoryRepository {
+        val database = StoryDatabase.getDatabase(application)
+        return StoryRepository.getInstance(provideApiService(), application, database)
     }
 
     fun provideUserRepository(application: Application): UserRepository {

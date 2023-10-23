@@ -10,7 +10,6 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.example.storyapp.R
 import com.example.storyapp.data.local.room.StoryDatabase
-import com.example.storyapp.data.local.room.StoryEntity
 import com.example.storyapp.data.local.room.StoryRemoteMediator
 import com.example.storyapp.data.model.ErrorResponse
 import com.example.storyapp.data.model.story.ListStoryItem
@@ -32,7 +31,7 @@ class StoryRepository private constructor(
     private val storyDatabase: StoryDatabase
 ) {
 
-    fun getStories(token: String): LiveData<PagingData<StoryEntity>> {
+    fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
 //        emit(Result.Loading)
 //        try {
 //            val response = apiService.getStories("Bearer $token")
