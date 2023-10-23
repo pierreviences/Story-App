@@ -1,7 +1,6 @@
 package com.example.storyapp.data.repository
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.ExperimentalPagingApi
@@ -25,7 +24,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 import java.io.IOException
-import java.net.SocketTimeoutException
 
 class StoryRepository private constructor(
     private val apiService: ApiStoryService,

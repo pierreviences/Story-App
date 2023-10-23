@@ -7,13 +7,11 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.data.model.auth.LoginResult
-import com.example.storyapp.data.model.story.StoryResponse
 import com.example.storyapp.databinding.ActivityMainBinding
 import com.example.storyapp.ui.adapter.LoadingStateAdapter
 import com.example.storyapp.ui.adapter.StoryAdapter
@@ -24,7 +22,6 @@ import com.example.storyapp.ui.view.map.MapsActivity
 import com.example.storyapp.ui.view.story.AddStoryActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
-import com.example.storyapp.utils.Result
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
