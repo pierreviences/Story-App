@@ -71,25 +71,11 @@ class MainActivity : AppCompatActivity() {
             binding.rvListStory.layoutManager = layoutManager
             binding.rvListStory.adapter = adapter
         }
-    private fun handleStoryResult(result: Result<StoryResponse>, adapter: StoryAdapter) {
-        when (result) {
-            is Result.Loading ->  showLoading(true)
-            is Result.Success -> {
-                showLoading(false)
-                val stories = result.data.listStory
-                adapter.submitList(stories)
-            }
-            is Result.Error -> {
-                showLoading(false)
-                val message = result.error
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+
     override fun onResume() {
         super.onResume()
             mainViewModel.getStories(dataUser.token).observe(this) { result ->
-                handleStoryResult(result, adapter)
+                adapter.submitData(lifecycle, result)
             }
     }
     private fun showLogoutDialog() {

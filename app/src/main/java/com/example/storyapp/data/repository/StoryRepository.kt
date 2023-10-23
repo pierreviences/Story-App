@@ -1,10 +1,17 @@
 package com.example.storyapp.data.repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.example.storyapp.R
 import com.example.storyapp.data.model.ErrorResponse
+import com.example.storyapp.data.model.story.ListStoryItem
 import com.example.storyapp.data.remote.ApiStoryService
+import com.example.storyapp.data.source.StoryPagingSource
 import com.example.storyapp.utils.Result
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,18 +27,27 @@ class StoryRepository private constructor(
     private val application: Application
 ) {
 
-    fun getStories(token: String) = liveData {
-        emit(Result.Loading)
-        try {
-            val response = apiService.getStories("Bearer $token")
-            emit(Result.Success(response))
-        } catch (e: HttpException) {
-            emit(handleHttpException(e))
-        } catch (exception: IOException) {
-            emit(Result.Error(application.resources.getString(R.string.network_error_message)))
-        } catch (exception: Exception) {
-            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
-        }
+    fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
+//        emit(Result.Loading)
+//        try {
+//            val response = apiService.getStories("Bearer $token")
+//            emit(Result.Success(response))
+//        } catch (e: HttpException) {
+//            emit(handleHttpException(e))
+//        } catch (exception: IOException) {
+//            emit(Result.Error(application.resources.getString(R.string.network_error_message)))
+//        } catch (exception: Exception) {
+//            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
+//        }
+
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, "Bearer $token")
+            }
+        ).liveData
     }
 
     fun uploadStories(description: String, photo: File, token: String)= liveData {

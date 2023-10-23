@@ -14,8 +14,9 @@ import com.example.storyapp.data.model.story.ListStoryItem
 import com.example.storyapp.databinding.ItemStoryBinding
 import com.example.storyapp.ui.view.story.DetailStoryActivity
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 
-class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     class MyViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ListStoryItem) = with(binding) {
