@@ -3,11 +3,15 @@ package com.example.storyapp.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.example.storyapp.R
+import com.example.storyapp.data.local.room.StoryDatabase
+import com.example.storyapp.data.local.room.StoryEntity
+import com.example.storyapp.data.local.room.StoryRemoteMediator
 import com.example.storyapp.data.model.ErrorResponse
 import com.example.storyapp.data.model.story.ListStoryItem
 import com.example.storyapp.data.remote.ApiStoryService
@@ -24,10 +28,11 @@ import java.io.IOException
 
 class StoryRepository private constructor(
     private val apiService: ApiStoryService,
-    private val application: Application
+    private val application: Application,
+    private val storyDatabase: StoryDatabase
 ) {
 
-    fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
+    fun getStories(token: String): LiveData<PagingData<StoryEntity>> {
 //        emit(Result.Loading)
 //        try {
 //            val response = apiService.getStories("Bearer $token")
@@ -39,13 +44,18 @@ class StoryRepository private constructor(
 //        } catch (exception: Exception) {
 //            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
 //        }
-
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(
+                "Bearer $token",
+                apiService,
+                storyDatabase
+            ),
             pagingSourceFactory = {
-                StoryPagingSource(apiService, "Bearer $token")
+                storyDatabase.storyDao().getStories()
             }
         ).liveData
     }
@@ -85,10 +95,11 @@ class StoryRepository private constructor(
         private var instance: StoryRepository? = null
         fun getInstance(
             apiService: ApiStoryService,
-            application: Application
+            application: Application,
+            storyDatabase: StoryDatabase
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, application)
+                instance ?: StoryRepository(apiService, application, storyDatabase)
             }.also { instance = it }
     }
 }
