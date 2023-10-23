@@ -1,13 +1,21 @@
 package com.example.storyapp.ui.view.map
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.storyapp.R
+import com.example.storyapp.data.model.auth.LoginResult
+import com.example.storyapp.data.model.story.ListStoryItem
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,14 +24,27 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.storyapp.databinding.ActivityMapsBinding
+import com.example.storyapp.ui.factory.ViewModelFactory
+import com.example.storyapp.ui.viewmodel.MapsViewModel
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.example.storyapp.utils.Result
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private val boundsBuilder = LatLngBounds.Builder()
+    private val viewModel: MapsViewModel by viewModels {
+        ViewModelFactory.getInstance(application)
+    }
+    private lateinit var dataLogin: LoginResult
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { if (it) getLocationForDevice() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +55,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(this)
+        getDataUserLogin()
     }
 
     /**
@@ -52,39 +76,63 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
-        mMap.addMarker(
-            MarkerOptions()
-                .position(dicodingSpace)
-                .title("Dicoding Space")
-                .snippet("Batik Kumeli No.50")
-        )
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
-        getMyLocation()
+        viewModel.getStoriesWithLocation(dataLogin.token).observe(this) {
+            if (it != null) {
+                when (it) {
+                    is Result.Success -> {
+                        it.data.listStory.forEach { data: ListStoryItem ->
+                            val latLng = LatLng(data.lat!!, data.lon!!)
+                            mMap.addMarker(
+                                MarkerOptions()
+                                    .position(latLng)
+                                    .title(data.name)
+                                    .snippet(data.description + "Latitude : ${data.lat}, Longitude : ${data.lon}")
+                            )
+                        }
+
+                        showLoading(false)
+                    }
+
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
+
+                    is Result.Error -> {
+                        showLoading(false)
+                        val message: String =
+                            application.getString(R.string.unexpected_error_message)
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                        Log.d(TAG, "onMapReady Error: ${it.error}")
+                    }
+                }
+            }
+        }
+
+        getLocationForDevice()
         setMapStyle()
-        addManyMarker()
+
 
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                getMyLocation()
-            }
-        }
-    private fun getMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+    private fun getLocationForDevice() {
+        if (
+            ContextCompat.checkSelfPermission(
+                applicationContext, ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-        }
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+                if (it != null) {
+                    val latLng = LatLng(it.latitude, it.longitude)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8f))
+                } else showToast(
+                   applicationContext,
+                    getString(R.string.please_active_locationyou)
+                )
+            }
+        } else requestPermissionLauncher.launch(ACCESS_COARSE_LOCATION)
     }
+
 
     private fun setMapStyle() {
         try {
@@ -98,34 +146,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    data class TourismPlace(
-        val name: String,
-        val latitude: Double,
-        val longitude: Double
-    )
+    fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
 
-    private fun addManyMarker() {
-        val tourismPlace = listOf(
-            TourismPlace("Floating Market Lembang", -6.8168954, 107.6151046),
-            TourismPlace("The Great Asia Africa", -6.8331128, 107.6048483),
-            TourismPlace("Rabbit Town", -6.8668408, 107.608081),
-            TourismPlace("Alun-Alun Kota Bandung", -6.9218518, 107.6025294),
-            TourismPlace("Orchid Forest Cikole", -6.780725, 107.637409),
-        )
-        tourismPlace.forEach { tourism ->
-            val latLng = LatLng(tourism.latitude, tourism.longitude)
-            mMap.addMarker(MarkerOptions().position(latLng).title(tourism.name))
-            boundsBuilder.include(latLng)
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun getDataUserLogin() {
+        viewModel.getUserLogin().observe(this) { result ->
+            dataLogin = result
         }
-        val bounds: LatLngBounds = boundsBuilder.build()
-        mMap.animateCamera(
-            CameraUpdateFactory.newLatLngBounds(
-                bounds,
-                resources.displayMetrics.widthPixels,
-                resources.displayMetrics.heightPixels,
-                300
-            )
-        )
     }
 
     companion object {

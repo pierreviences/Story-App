@@ -74,6 +74,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.4.3")
     implementation("androidx.room:room-paging:2.4.3")
     kapt("androidx.room:room-compiler:2.4.3")
+    implementation("com.google.android.gms:play-services-maps:18.0.0")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
 
 }
 kapt {
