@@ -71,6 +71,12 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            mainViewModel.getStories(dataUser.token).observe(this) { result ->
+                adapter.submitData(lifecycle, result)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+        }
     }
     private fun setupRecyclerView(adapter: StoryAdapter) {
             val layoutManager = LinearLayoutManager(this)
@@ -84,9 +90,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-            mainViewModel.getStories(dataUser.token).observe(this) { result ->
-                adapter.submitData(lifecycle, result)
-            }
+        getStories()
+    }
+    private fun getStories() {
+        mainViewModel.getStories(dataUser.token).observe(this) { result ->
+            adapter.submitData(lifecycle, result)
+        }
     }
     private fun showLogoutDialog() {
         val customDialogView = LayoutInflater.from(this).inflate(R.layout.custom_alertdialog_logout, null)

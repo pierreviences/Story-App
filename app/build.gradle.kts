@@ -80,6 +80,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
     testImplementation("org.mockito:mockito-core:3.12.4")
     testImplementation("org.mockito:mockito-inline:3.12.4")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
 }
 kapt {
