@@ -1,6 +1,7 @@
 package com.example.storyapp.data.repository
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.ExperimentalPagingApi
@@ -23,6 +24,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 class StoryRepository private constructor(
     private val apiService: ApiStoryService,
@@ -31,17 +33,6 @@ class StoryRepository private constructor(
 ) {
 
     fun getStories(token: String): LiveData<PagingData<ListStoryItem>> {
-//        emit(Result.Loading)
-//        try {
-//            val response = apiService.getStories("Bearer $token")
-//            emit(Result.Success(response))
-//        } catch (e: HttpException) {
-//            emit(handleHttpException(e))
-//        } catch (exception: IOException) {
-//            emit(Result.Error(application.resources.getString(R.string.network_error_message)))
-//        } catch (exception: Exception) {
-//            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
-//        }
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
@@ -79,6 +70,20 @@ class StoryRepository private constructor(
             emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
         }
 
+    }
+
+    fun getStoriesWithLocation(token: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getStoriesWithLocation("Bearer $token")
+            emit(Result.Success(response))
+        }  catch (e: HttpException) {
+            emit(handleHttpException(e))
+        } catch (exception: IOException) {
+            emit(Result.Error(application.resources.getString(R.string.network_error_message)))
+        } catch (exception: Exception) {
+            emit(Result.Error(exception.message ?: application.resources.getString(R.string.unknown_error)))
+        }
     }
 
     private fun handleHttpException(exception: HttpException): Result.Error {
