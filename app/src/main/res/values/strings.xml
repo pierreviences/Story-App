@@ -36,9 +36,12 @@
     <string name="menu_logout">Logout</string>
     <string name="register">Register</string>
     <string name="retry">Try Again</string>
+    <string name="menu_language">Language</string>
+    <string name="menu_map">Maps</string>
     <string name="success_upload_photo">Congratulations, you have successfully uploaded the image</string>
     <string name="empty_image_warning">Please insert the image file first.</string>
     <string name="register_have_account">Already have an account?</string>
     <string name="network_error_message">Network error occurred. Please check your internet connection</string>
     <string name="unexpected_error_message">An unexpected error occurred. Please try again later</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

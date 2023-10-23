@@ -20,6 +20,7 @@ import com.example.storyapp.ui.adapter.StoryAdapter
 import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.factory.ViewModelFactory
 import com.example.storyapp.ui.view.auth.LoginActivity
+import com.example.storyapp.ui.view.map.MapsActivity
 import com.example.storyapp.ui.view.story.AddStoryActivity
 import com.example.storyapp.ui.viewmodel.LoginViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
@@ -60,6 +61,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.logout -> {
                     showLogoutDialog()
+                    true
+                }
+                R.id.map -> {
+                    startActivity(Intent(this@MainActivity, MapsActivity::class.java))
                     true
                 }
 
