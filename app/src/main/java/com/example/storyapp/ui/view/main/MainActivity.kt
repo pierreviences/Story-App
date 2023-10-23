@@ -15,6 +15,7 @@ import com.example.storyapp.R
 import com.example.storyapp.data.model.auth.LoginResult
 import com.example.storyapp.data.model.story.StoryResponse
 import com.example.storyapp.databinding.ActivityMainBinding
+import com.example.storyapp.ui.adapter.LoadingStateAdapter
 import com.example.storyapp.ui.adapter.StoryAdapter
 import com.example.storyapp.ui.factory.AuthViewModelFactory
 import com.example.storyapp.ui.factory.ViewModelFactory
@@ -69,7 +70,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView(adapter: StoryAdapter) {
             val layoutManager = LinearLayoutManager(this)
             binding.rvListStory.layoutManager = layoutManager
-            binding.rvListStory.adapter = adapter
+            binding.rvListStory.adapter = adapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    adapter.retry()
+                }
+            )
         }
 
     override fun onResume() {

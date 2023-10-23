@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
+    id("kotlin-android")
 }
 
 android {
@@ -67,4 +69,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.0.0")
     implementation("androidx.exifinterface:exifinterface:1.3.6")
     implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+    implementation("androidx.room:room-ktx:2.4.0-rc01")
+    implementation("androidx.room:room-paging:2.4.0-rc01")
+    kapt("androidx.room:room-compiler:2.4.0-rc01")
 }
