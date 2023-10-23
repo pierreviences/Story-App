@@ -35,6 +35,7 @@
     <string name="login_success_desc">You have successfully logged in, welcome</string>
     <string name="menu_logout">Logout</string>
     <string name="register">Register</string>
+    <string name="retry">Try Again</string>
     <string name="success_upload_photo">Congratulations, you have successfully uploaded the image</string>
     <string name="empty_image_warning">Please insert the image file first.</string>
     <string name="register_have_account">Already have an account?</string>
