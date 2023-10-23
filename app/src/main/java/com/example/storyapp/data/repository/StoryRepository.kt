@@ -39,7 +39,7 @@ class StoryRepository private constructor(
                 pageSize = 5
             ),
             remoteMediator = StoryRemoteMediator(
-                "Bearer $token",
+                getAuthToken(token),
                 apiService,
                 storyDatabase
             ),
@@ -51,7 +51,6 @@ class StoryRepository private constructor(
 
     fun uploadStories(description: String, photo: File, token: String)= liveData {
         emit(Result.Loading)
-        val authToken  = "Bearer $token"
         val requestBody = description.toRequestBody("text/plain".toMediaType())
         val requestImageFile = photo.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
@@ -60,7 +59,7 @@ class StoryRepository private constructor(
             requestImageFile
         )
         try {
-            val response = apiService.uploadStory(authToken , multipartBody, requestBody )
+            val response = apiService.uploadStory(getAuthToken(token), multipartBody, requestBody )
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))
@@ -75,7 +74,7 @@ class StoryRepository private constructor(
     fun getStoriesWithLocation(token: String) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getStoriesWithLocation("Bearer $token")
+            val response = apiService.getStoriesWithLocation(getAuthToken(token))
             emit(Result.Success(response))
         }  catch (e: HttpException) {
             emit(handleHttpException(e))
@@ -91,6 +90,10 @@ class StoryRepository private constructor(
         val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
         val errorMessage = errorBody.message
         return Result.Error(errorMessage)
+    }
+
+    private fun getAuthToken(token: String): String {
+        return "Bearer $token"
     }
 
     companion object {

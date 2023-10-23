@@ -8,6 +8,7 @@ import com.example.storyapp.data.repository.UserRepository
 import com.example.storyapp.di.Injection
 import com.example.storyapp.ui.viewmodel.AddStoryViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
+import com.example.storyapp.ui.viewmodel.MapsViewModel
 
 class ViewModelFactory private constructor(
     private val userRepository: UserRepository,
@@ -20,6 +21,8 @@ class ViewModelFactory private constructor(
                 MainViewModel(userRepository, storyRepository) as T
             modelClass.isAssignableFrom(AddStoryViewModel::class.java) ->
                 AddStoryViewModel(userRepository, storyRepository) as T
+            modelClass.isAssignableFrom(MapsViewModel::class.java) ->
+                MapsViewModel(userRepository, storyRepository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
     companion object {
